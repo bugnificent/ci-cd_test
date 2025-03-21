@@ -1,27 +1,31 @@
 pipeline {
     agent any
 
-    environment {
-         LHCI_GITHUB_APP_TOKEN = '4TP41Xnq7eKhhZK8:63041757:EYqAIjq6'
-    }
-
     stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
         stage('Run Lighthouse CI') {
             steps {
-                    sh 'lhci autorun'
-                }
+                sh 'lhci autorun'
             }
         }
     }
 
     post {
-        failure {
-            echo 'Lighthouse CI testing failed.'
+        always {
+            echo 'Lighthouse CI pipeline completed.'
         }
         success {
-            echo 'Lighthouse CI testing completed successfully.'
+            echo 'Pipeline succeeded!'
+        }
+        failure {
+            echo 'Pipeline failed!'
         }
     }
+}
 
 
 
