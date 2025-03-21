@@ -39,10 +39,3 @@ jobs:
         with:
           include_passed: true
           report_paths: '**/reports/TEST-*.xml'
-
-      # Step 6: Upload Lighthouse CI Report as Artifact
-      - name: Upload Lighthouse CI Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: lighthouse-report
-          path: 'reports/.lighthouseci.html'  # Path to the Lighthouse CI report directory
