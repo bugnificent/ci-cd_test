@@ -24,7 +24,7 @@ jobs:
         continue-on-error: true  # Allow subsequent steps to run even if this step fails
         uses: PortSwigger/dastardly-github-action@main
         with:
-          target-url: 'https://yusufasik.com'  # Replace with your target URL
+          target-url: 'https://ginandjuice.shop'  # Replace with your target URL
 
       # Step 4: Run Lighthouse CI
       - name: Run Lighthouse CI
