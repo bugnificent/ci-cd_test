@@ -17,6 +17,7 @@ pipeline {
     post {
         always {
             echo 'Lighthouse CI pipeline completed.'
+            archiveArtifacts artifacts: 'lighthouse-report.html', onlyIfSuccessful: false
         }
         success {
             echo 'Pipeline succeeded!'
