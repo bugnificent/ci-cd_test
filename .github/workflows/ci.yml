@@ -24,10 +24,20 @@ jobs:
         continue-on-error: true  # Allow subsequent steps to run even if this step fails
         uses: PortSwigger/dastardly-github-action@main
         with:
-          target-url: 'https://ginandjuice.shop'  # Replace with your target URL
+          target-url: 'https://ginandjuice.shop'
+          output-filename: dastardly-report.xml
 
       # Step 4: Run Lighthouse CI
       - name: Run Lighthouse CI
         run: lhci autorun
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+      # Step 5 Upload XML as artifact
+      - name: Upload scan results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+         name: dastardly-reports
+         path: ${{ github.workspace }}/dastardly-report.xml
+        
