@@ -36,7 +36,7 @@ jobs:
 
       # Step 6: Upload Lighthouse CI Report as Artifact
       - name: Upload Lighthouse CI Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: lighthouse-report
           path: .lighthouseci  # Path to the Lighthouse CI report directory
