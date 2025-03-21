@@ -28,15 +28,17 @@ jobs:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
 
       # Step 5: Upload Dastardly Report as Artifact
-      - name: Upload Dastardly Report
-        uses: actions/upload-artifact@v4
+      # You can replace this next step with any JUnit XML parser of your choosing
+      - name: Publish Test Report
+        if: always()                                    # Forces this step to always run
+        uses: mikepenz/action-junit-report@v3
         with:
-          name: dastardly-report
-          path: dastardly-report.html  # Path to the Dastardly report
+         report_paths: 'reports/dastardly-report.xml'       # You need to update this path if you pass in a different output filename to the Dastardly action
+         require_tests: true
 
       # Step 6: Upload Lighthouse CI Report as Artifact
       - name: Upload Lighthouse CI Report
         uses: actions/upload-artifact@v4
         with:
           name: lighthouse-report
-          path: .lighthouseci  # Path to the Lighthouse CI report directory
+          path: 'reports/.lighthouseci'  # Path to the Lighthouse CI report directory
