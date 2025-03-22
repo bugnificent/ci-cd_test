@@ -79,8 +79,6 @@ pipeline {
                 script {
                     sh '''
                     #!/bin/bash
-                    set -euxo pipefail
-
                     # Install and run Lighthouse CI
                     # npm install -g @lhci/cli@0.14.x
                     lhci autorun
