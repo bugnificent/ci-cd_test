@@ -31,7 +31,7 @@ jobs:
         continue-on-error: true  # Allow subsequent steps to run even if this step fails
         uses: PortSwigger/dastardly-github-action@main
         with:
-          target-url: 'https://ginandjuice.shop'
+          target-url: 'https://ci-cdtest.vercel.app'
           output-filename: dastardly-report.xml
 
       # Step 4: Run Lighthouse CI
