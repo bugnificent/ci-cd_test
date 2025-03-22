@@ -86,7 +86,7 @@ Ensure the following **GitHub Secrets** are configured for a successful pipeline
 ---
 
 ## 📚 License
-This project is licensed under the **MIT License**.
+This project is licensed under the [MIT License](LICENSE).
 
 ---
 
