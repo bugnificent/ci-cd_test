@@ -3,8 +3,15 @@ permissions:
     checks: write
     id-token: write
 
-name: CI
-on: [push]
+name: CI/CD Pipeline
+
+on:
+ push:
+    branches:
+      - main  # Trigger on push to the main branch
+ pull_request:
+    branches:
+      - main  # Trigger on pull request targeting the main branch
 
 jobs:
   lhci-and-dastardly:
