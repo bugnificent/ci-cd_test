@@ -47,4 +47,21 @@ jobs:
         with:
          name: dastardly-reports
          path: ${{ github.workspace }}/dastardly-report.xml
+         
+  deploy:
+    needs: lhci-and-dastardly  # Only deploy if Lighthouse and DASTARDLY run
+    runs-on: ubuntu-latest
+    steps:
+       - name: Checkout repository
+         uses: actions/checkout@v4
+
+      # Deploy to Vercel (Preview for branches, Production for main)
+       - name: Deploy to Vercel
+         uses: amondnet/vercel-action@v25
+         with:
+           vercel-token: ${{ secrets.VERCEL_TOKEN }}
+           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+           vercel-args: ${{ github.ref == 'refs/heads/main' && '--prod' || '' }}
+           github-comment: true  # Adds deployment URL to PR as a comment
         
