@@ -37,7 +37,7 @@ module.exports = {
 ---
 
 ## 📄 GitHub Actions CI/CD Pipeline
-The pipeline is defined in `.github/workflows/ci-cd.yaml`.  
+The pipeline is defined in [`.github/workflows/ci-cd.yml`](https://github.com/bugnificent/ci-cd_test/blob/main/.github/workflows/ci-cd.yml).  
 It consists of **two jobs**:
 
 ### 1. Lighthouse CI and Dastardly Scan
