@@ -1,0 +1,8 @@
+Alert: User Agent Fuzzer
+Risk: Informational
+Confidence: Medium
+Description: Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.
+Solution: 
+Reference: https://owasp.org/wstg
+URL: https://yusufasik.com/assets/js
+--------------------

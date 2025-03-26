@@ -1,0 +1,8 @@
+Alert: Information Disclosure - Suspicious Comments
+Risk: Informational
+Confidence: Low
+Description: The response appears to contain suspicious comments which may help an attacker.
+Solution: Remove all comments that return information that may help an attacker and fix any underlying problems they refer to.
+Reference: 
+URL: https://yusufasik.com/assets/files/waypoints/noframework.waypoints.js
+--------------------
