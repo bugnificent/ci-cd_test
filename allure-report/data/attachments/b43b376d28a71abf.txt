@@ -1,8 +1,0 @@
-Violation: list
-Description: Ensure that lists are structured correctly
-Help: <ul> and <ol> must only directly contain <li>, <script> or <template> elements
-Help URL: https://dequeuniversity.com/rules/axe/4.10/list?application=axeAPI
-Impact: serious
-Tags: [cat.structure, wcag2a, wcag131, EN-301-549, EN-9.1.3.1]
-Nodes: 1
---------------------

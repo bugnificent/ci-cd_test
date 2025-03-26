@@ -1,8 +1,0 @@
-Violation: heading-order
-Description: Ensure the order of headings is semantically correct
-Help: Heading levels should only increase by one
-Help URL: https://dequeuniversity.com/rules/axe/4.10/heading-order?application=axeAPI
-Impact: moderate
-Tags: cat.semantics, best-practice
-Nodes: 9
---------------------

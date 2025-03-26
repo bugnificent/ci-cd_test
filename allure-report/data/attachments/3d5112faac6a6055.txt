@@ -1,8 +1,0 @@
-Violation: landmark-unique
-Description: Ensure landmarks are unique
-Help: Landmarks should have a unique role or role/label/title (i.e. accessible name) combination
-Help URL: https://dequeuniversity.com/rules/axe/4.10/landmark-unique?application=axeAPI
-Impact: moderate
-Tags: [cat.semantics, best-practice]
-Nodes: 1
---------------------
