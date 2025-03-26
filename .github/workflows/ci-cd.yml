@@ -59,14 +59,15 @@ jobs:
         with:
           python-version: '3.9'
       - name: Install Dependencies
-        run: pip install pytest pytest-html
+        run: pip install allure-pytest
       - name: Run Tests and Generate Report
-        run: pytest --html=report.html
+        run:  pytest --alluredir=allure-results
+              allure generate allure-results -o allure-report --clean
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: .
+          folder: allure-report
          
   deploy:
     needs: lhci-and-dastardly  # Only deploy if Lighthouse and DASTARDLY run
