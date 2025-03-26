@@ -47,6 +47,26 @@ jobs:
         with:
          name: dastardly-reports
          path: ${{ github.workspace }}/dastardly-report.xml
+
+  test-and-deploy:
+    name: Deploy Test Report
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - name: Set Up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - name: Install Dependencies
+        run: pip install pytest pytest-html
+      - name: Run Tests and Generate Report
+        run: pytest --html=report.html
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: .
          
   deploy:
     needs: lhci-and-dastardly  # Only deploy if Lighthouse and DASTARDLY run
