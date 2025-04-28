@@ -23,13 +23,9 @@ jobs:
 
       - name: Run Unlighthouse scan
         run: |
-         mkdir -p ./unlighthouse-reports
-
          unlighthouse-ci --site https://ci-cdtest.vercel.app \
          --build-static \
-         --output-path ./unlighthouse-reports/
-         
-         ls -la ./unlighthouse-reports
+         --output-dir ./SoftLand/unlighthouse-reports
 
       - name: Upload Unlighthouse reports
         uses: actions/upload-artifact@v4
