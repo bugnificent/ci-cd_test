@@ -1,11 +1,12 @@
 module.exports = {
   ci: {
     collect: {
-      staticDistDir: './SoftLand/', // Replace with the path to your built files or if its node.js adjust package.json
+      staticDistDir: './SoftLand/', // Statik sitenizin dizini
     },
     upload: {
-      target: 'temporary-public-storage', // Use public storage or setup server
+      target: 'temporary-public-storage', // Geçici depolama, bu da uygun
+      outputDir: './SoftLand/lighthouse-reports', // Raporların kaydedileceği dizin
+      reportFilenamePattern: 'lighthouse-report-%%TIMESTAMP%%.html', // Rapor dosya adı formatı
     },
   },
 };
-
