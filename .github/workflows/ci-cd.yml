@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Unlighthouse
-        run: npm install -g @unlighthouse/cli
+        run: npm install -g @unlighthouse/cli puppeteer netlify-cli
 
       - name: Run Unlighthouse scan
         run: |
