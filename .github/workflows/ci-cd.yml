@@ -1,10 +1,12 @@
-name: CI/CD with Unlighthouse
+name: CI/CD Pipeline
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main  # Trigger on push to the main branch
   pull_request:
-    branches: [main]
+    branches:
+      - main  # Trigger on pull request targeting the main branch
 
 permissions:
   contents: read
@@ -12,29 +14,56 @@ permissions:
   id-token: write
 
 jobs:
-  accessibility:
+  lhci-and-dastardly:
+    name: Lighthouse CI and Dastardly Scan
     runs-on: ubuntu-latest
     steps:
+      # Step 1: Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install Unlighthouse
-        run: npm install -g @unlighthouse/cli puppeteer netlify-cli
+      # Step 2: Install Lighthouse CI
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli@0.14.x
 
-      - name: Run Unlighthouse scan
-        run: |
-         unlighthouse-ci --site ci-cdtest.vercel.app --build-static 
-      - name: Run Unlighthouse Scan
-        run: |
-         # Varsayılan .unlighthouse klasörüne rapor oluştur
-         unlighthouse-ci --site https://ci-cdtest.vercel.app --build-static
-         # Debug: Oluşan dosyaları kontrol et
-         echo "📂 Unlighthouse çıktıları:"
-         ls -la ./.unlighthouse
+      # Step 3: Run Dastardly Scan
+      - name: Run Dastardly Scan
+        continue-on-error: true  # Allow subsequent steps to run even if this step fails
+        uses: PortSwigger/dastardly-github-action@main
+        with:
+          target-url: 'https://ci-cdtest.vercel.app'
+          output-filename: dastardly-report.xml
 
-      - name: Move Reports to SoftLand
-        run: |
-         # Raporları SoftLand'ın public dizinine taşı
-         mkdir -p ./SoftLand/public/reports
-         cp -r ./.unlighthouse/* ./SoftLand/public/reports/
-         echo "✅ Raporlar taşındı:" && ls -la ./SoftLand/public/reports
+      # Step 4: Run Lighthouse CI
+      - name: Run Lighthouse CI
+        run: lhci autorun
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+      # Step 5: Upload XML as artifact
+      - name: Upload scan results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dastardly-reports
+          path: dastardly-report.xml
+
+  deploy:
+    needs: lhci-and-dastardly  # Only deploy if Lighthouse and Dastardly job succeeds
+    name: Deploy to Vercel
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Deploy to Vercel
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: ${{ github.ref == 'refs/heads/main' && '--prod' || '' }}
+          working-directory: ./SoftLand
+          github-comment: true  # Adds deployment URL to PR as a comment
