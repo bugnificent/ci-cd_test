@@ -36,30 +36,3 @@ jobs:
         with:
           name: unlighthouse-reports
           path: ./unlighthouse-reports
-
-  deploy:
-    needs: accessibility
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Deploy Unlighthouse Reports to Vercel
-        env:
-         VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-         VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-         VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-         
-        run: |
-         COMMIT_MESSAGE="${GITHUB_COMMIT_MESSAGE:-'Automatic deployment'}"
-         npm install -g vercel@25.1.0
-         vercel deploy ./SoftLand/unlighthouse-reports \
-         --prod \
-         --name unlighthouse-reports \
-         -t $VERCEL_TOKEN \
-         -m githubCommitSha=$GITHUB_SHA \
-         -m githubCommitAuthorName=$GITHUB_ACTOR \
-         -m githubDeployment=1 \
-         -m githubRepo=$GITHUB_REPOSITORY \
-         -m githubCommitMessage="$COMMIT_MESSAGE" \
-         -m githubCommitRef=$GITHUB_REF_NAME
