@@ -38,18 +38,26 @@ jobs:
           path: ./unlighthouse-reports
 
   deploy:
-    needs: quality-checks
+    needs: accessibility
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v25
-        with:
-         vercel-token: ${{ secrets.VERCEL_TOKEN }}
-         vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-         vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-         vercel-args: ${{ github.ref == 'refs/heads/main' && '--prod' || '' }}
-         working-directory: ./SoftLand/unlighthouse-reports
-         github-comment: true  # Adds deployment URL to PR as a comment
+      - name: Deploy Unlighthouse Reports to Vercel
+        env:
+         VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+         VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+         VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+         npm install -g vercel@25.1.0
+         vercel deploy ./SoftLand/unlighthouse-reports \
+         --prod \
+         --name unlighthouse-reports \
+         -t $VERCEL_TOKEN \
+         -m githubCommitSha=$GITHUB_SHA \
+         -m githubCommitAuthorName=$GITHUB_ACTOR \
+         -m githubDeployment=1 \
+         -m githubRepo=$GITHUB_REPOSITORY \
+         -m githubCommitMessage="$GITHUB_COMMIT_MESSAGE" \
+         -m githubCommitRef=$GITHUB_REF_NAME
