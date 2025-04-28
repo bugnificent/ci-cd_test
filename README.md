@@ -89,6 +89,6 @@ This project is licensed under the [MIT License](LICENSE).
 
 ---
 ## 📩 Contact
-For any issues or questions, feel free to **open an issue** or reach out via **[yusufasik.com](https://yusufasik.com/)**. 🚀
+For any issues or questions, feel free to **open an issue** or reach out via **[yusufasik.com](https://yusufasik.com/)**.
 
 
