@@ -5,8 +5,8 @@ module.exports = {
     },
     upload: {
       target: 'filesystem',
-      outputDir: './SoftLand/lighthouse-reports',
-      reportFilenamePattern: 'lighthouse-report-%%PATHNAME%%-%%DATETIME%%.html'
+      target: 'temporary-public-storage',
+      outputDir: './SoftLand/lighthouse-reports'    
     }
   }
 };
