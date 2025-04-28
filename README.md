@@ -18,7 +18,7 @@ The **Lighthouse CI** configuration is defined in `lighthouserc.js`:
 module.exports = {
   ci: {
     collect: {
-      staticDistDir: './SoftLand/', // Replace with the path to your built files or if using Node.js, adjust package.json
+      staticDistDir: './', // Replace with the path to your built files or if using Node.js, adjust package.json
     },
     upload: {
       target: 'temporary-public-storage', // Use public storage or setup server
