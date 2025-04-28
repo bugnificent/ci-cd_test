@@ -1,5 +1,4 @@
 # Portfolio CI/CD Pipeline 🚀
-
 This repository contains a **CI/CD pipeline** for deploying a personal portfolio website, integrating **Lighthouse CI for performance & accessibility auditing**, and **Dastardly for security vulnerability scanning**. The setup ensures high-quality and secure web deployments using **GitHub Actions, Jenkins and Vercel**.
 
 ---
