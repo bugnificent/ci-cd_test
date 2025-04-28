@@ -1,12 +1,10 @@
 module.exports = {
   ci: {
     collect: {
-      staticDistDir: './SoftLand/',
+      staticDistDir: './',
     },
     upload: {
-      target: 'filesystem',
       target: 'temporary-public-storage',
-      outputDir: './SoftLand/lighthouse-reports'    
     }
   }
 };
