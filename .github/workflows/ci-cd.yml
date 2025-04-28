@@ -1,68 +1,52 @@
-permissions:
-    contents: read
-    checks: write
-    id-token: write
-
-name: CI/CD Pipeline
+name: CI/CD with Unlighthouse
 
 on:
- push:
-    branches:
-      - main  # Trigger on push to the main branch
- pull_request:
-    branches:
-      - main  # Trigger on pull request targeting the main branch
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  checks: write
+  id-token: write
 
 jobs:
-  lhci-and-dastardly:
-    name: Lighthouse CI and Dastardly Scan
+  quality-checks:
     runs-on: ubuntu-latest
     steps:
-      # Step 1: Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Step 2: Install Lighthouse CI
-      - name: Install Lighthouse CI
-        run: npm install -g @lhci/cli@0.14.x
+      - name: Install Unlighthouse
+        run: npm install -g @unlighthouse/cli
 
-      # Step 3: Run Dastardly Scan
-      - name: Run Dastardly Scan
-        continue-on-error: true  # Allow subsequent steps to run even if this step fails
-        uses: PortSwigger/dastardly-github-action@main
-        with:
-          target-url: 'https://ci-cdtest.vercel.app'
-          output-filename: dastardly-report.xml
+      - name: Run Unlighthouse scan
+        run: |
+          unlighthouse-ci --site https://ci-cdtest.vercel.app \
+          --budget 75 \
+          --build-static \
+          --output-dir ./lighthouse-reports
 
-      # Step 4: Run Lighthouse CI
-      - name: Run Lighthouse CI
-        run: lhci autorun
-        env:
-          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
-
-      # Step 5 Upload XML as artifact
-      - name: Upload scan results
+      - name: Upload Unlighthouse reports
         uses: actions/upload-artifact@v4
-        if: always()
         with:
-         name: dastardly-reports
-         path: ${{ github.workspace }}/dastardly-report.xml
-         
+          name: unlighthouse-reports
+          path: ./lighthouse-reports
+
   deploy:
-    needs: lhci-and-dastardly  # Only deploy if Lighthouse and DASTARDLY run
+    needs: quality-checks
     runs-on: ubuntu-latest
     steps:
-       - name: Checkout repository
-         uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      # Deploy to Vercel (Preview for branches, Production for main)
-       - name: Deploy to Vercel
-         uses: amondnet/vercel-action@v25
-         with:
-           vercel-token: ${{ secrets.VERCEL_TOKEN }}
-           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-           vercel-args: ${{ github.ref == 'refs/heads/main' && '--prod' || '' }}
-           working-directory: ./SoftLand/
-           github-comment: true  # Adds deployment URL to PR as a comment
-        
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: ${{ github.ref == 'refs/heads/main' && '--prod' || '' }}
+          working-directory: ./SoftLand/
+          github-comment: true
