@@ -50,6 +50,6 @@ jobs:
          vercel-token: ${{ secrets.VERCEL_TOKEN }}
          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-         working-directory: ./unlighthouse-reports
-         vercel-args: ${{ github.ref == 'refs/heads/main' && '--prod --name unlighthouse-reports' || '--name unlighthouse-reports' }}
-         github-comment: true
+         vercel-args: ${{ github.ref == 'refs/heads/main' && '--prod' || '' }}
+         working-directory: ./SoftLand/unlighthouse-reports
+         github-comment: true  # Adds deployment URL to PR as a comment
