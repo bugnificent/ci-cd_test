@@ -23,16 +23,19 @@ jobs:
 
       - name: Run Unlighthouse scan
         run: |
-          unlighthouse-ci --site https://ci-cdtest.vercel.app \
-          --budget 75 \
-          --build-static \
-          --output-dir ./lighthouse-reports
+         mkdir -p ./unlighthouse-reports
+
+         unlighthouse-ci --site https://ci-cdtest.vercel.app \
+         --build-static \
+         --output-path ./unlighthouse-reports/
+         
+         ls -la ./unlighthouse-reports
 
       - name: Upload Unlighthouse reports
         uses: actions/upload-artifact@v4
         with:
           name: unlighthouse-reports
-          path: ./lighthouse-reports
+          path: ./unlighthouse-reports
 
   deploy:
     needs: quality-checks
@@ -44,9 +47,9 @@ jobs:
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v25
         with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: ${{ github.ref == 'refs/heads/main' && '--prod' || '' }}
-          working-directory: ./SoftLand/
-          github-comment: true
+         vercel-token: ${{ secrets.VERCEL_TOKEN }}
+         vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+         vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+         working-directory: ./unlighthouse-reports
+         vercel-args: ${{ github.ref == 'refs/heads/main' && '--prod --name unlighthouse-reports' || '--name unlighthouse-reports' }}
+         github-comment: true
