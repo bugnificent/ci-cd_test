@@ -49,7 +49,9 @@ jobs:
          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+         
         run: |
+         COMMIT_MESSAGE="${GITHUB_COMMIT_MESSAGE:-'Automatic deployment'}"
          npm install -g vercel@25.1.0
          vercel deploy ./SoftLand/unlighthouse-reports \
          --prod \
