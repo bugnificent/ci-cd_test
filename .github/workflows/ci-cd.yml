@@ -23,12 +23,28 @@ jobs:
 
       - name: Run Unlighthouse scan
         run: |
-         unlighthouse-ci --site https://ci-cdtest.vercel.app \
-         --build-static \
-         --output-dir ./SoftLand/unlighthouse-reports
+         unlighthouse-ci --site https://ci-cdtest.vercel.app --build-static 
+      - name: Run Unlighthouse Scan
+        run: |
+         # Varsayılan .unlighthouse klasörüne rapor oluştur
+         unlighthouse-ci --site https://ci-cdtest.vercel.app --build-static
+         # Debug: Oluşan dosyaları kontrol et
+         echo "📂 Unlighthouse çıktıları:"
+         ls -la ./.unlighthouse
 
-      - name: Upload Unlighthouse reports
-        uses: actions/upload-artifact@v4
+      - name: Move Reports to SoftLand
+        run: |
+         # Raporları SoftLand'ın public dizinine taşı
+         mkdir -p ./SoftLand/public/reports
+         cp -r ./.unlighthouse/* ./SoftLand/public/reports/
+         echo "✅ Raporlar taşındı:" && ls -la ./SoftLand/public/reports
+
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
         with:
-          name: unlighthouse-reports
-          path: ./unlighthouse-reports
+         vercel-token: ${{ secrets.VERCEL_TOKEN }}
+         vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+         vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+         vercel-args: ${{ github.ref == 'refs/heads/main' && '--prod' || '' }}
+         working-directory: ./SoftLand/
+         github-comment: true
