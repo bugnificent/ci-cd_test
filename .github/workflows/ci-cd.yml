@@ -12,7 +12,7 @@ permissions:
   id-token: write
 
 jobs:
-  quality-checks:
+  accessibility:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
