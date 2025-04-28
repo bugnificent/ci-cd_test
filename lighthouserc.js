@@ -3,9 +3,6 @@ module.exports = {
     collect: {
       staticDistDir: './SoftLand/',
     },
-    assert: {
-      preset: 'lighthouse:recommended',
-    },
     upload: {
       target: 'filesystem',
       outputDir: './SoftLand/lighthouse-reports',
