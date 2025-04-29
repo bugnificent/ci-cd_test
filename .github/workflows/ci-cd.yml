@@ -29,17 +29,11 @@ jobs:
           target-url: 'https://ci-cdtest.vercel.app'
           output-filename: dastardly-report.xml
 
-      - name: Set Chrome path
-        id: chrome-path
-        run: |
-         echo "CHROME_PATH=$(find node_modules/puppeteer/.local-chromium -name chrome -type f)" >> $GITHUB_ENV
-
+      # Step 4: Run Lighthouse
       - name: Run Lighthouse CI
         run: lhci autorun
         env:
          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
-         PUPPETEER_EXECUTABLE_PATH: ${{ env.CHROME_PATH }}
-
 
       # Step 5: Upload XML as artifact
       - name: Upload scan results
